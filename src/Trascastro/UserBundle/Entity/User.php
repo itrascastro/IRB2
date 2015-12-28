@@ -12,7 +12,6 @@
 
 namespace Trascastro\UserBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +28,18 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ciclo", inversedBy="instructors")
+     */
+    private $ciclo;
 
     /**
      * @var \DateTime
@@ -93,5 +104,53 @@ class User extends BaseUser
     public function __toString()
     {
         return $this->username;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set ciclo
+     *
+     * @param \AppBundle\Entity\Ciclo $ciclo
+     *
+     * @return User
+     */
+    public function setCiclo(\AppBundle\Entity\Ciclo $ciclo = null)
+    {
+        $this->ciclo = $ciclo;
+
+        return $this;
+    }
+
+    /**
+     * Get ciclo
+     *
+     * @return \AppBundle\Entity\Ciclo
+     */
+    public function getCiclo()
+    {
+        return $this->ciclo;
     }
 }
