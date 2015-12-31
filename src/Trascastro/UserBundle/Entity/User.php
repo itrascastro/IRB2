@@ -37,6 +37,13 @@ class User extends BaseUser
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="surnames", type="string", length=255, nullable=true)
+     */
+    private $surnames;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ciclo", inversedBy="instructors")
      */
     private $ciclo;
@@ -152,5 +159,29 @@ class User extends BaseUser
     public function getCiclo()
     {
         return $this->ciclo;
+    }
+
+    /**
+     * Set surnames
+     *
+     * @param string $surnames
+     *
+     * @return User
+     */
+    public function setSurnames($surnames)
+    {
+        $this->surnames = $surnames;
+
+        return $this;
+    }
+
+    /**
+     * Get surnames
+     *
+     * @return string
+     */
+    public function getSurnames()
+    {
+        return $this->surnames;
     }
 }

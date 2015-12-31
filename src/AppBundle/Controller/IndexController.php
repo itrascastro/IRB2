@@ -5,9 +5,8 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Trascastro\UserBundle\Entity\User;
-use Trascastro\UserBundle\Form\SetUpType;
 use Symfony\Component\HttpFoundation\Request;
+use Trascastro\UserBundle\Form\SetUpType;
 
 class IndexController extends Controller
 {
@@ -17,30 +16,32 @@ class IndexController extends Controller
      */
     public function indexAction()
     {
-        if (!$this->getUser()->getName()) {
-            return $this->forward('AppBundle:Index:setUp', ['username' => $this->getUser()->getUsername()]);
+        $user = $this->getUser();
+
+        if (!$user->getName()) {
+            return $this->forward('AppBundle:Index:setUp');
         }
 
         return $this->render(':index:index.html.twig');
     }
 
-    /**
-     * @Route("/setup/{username}", name="app_index_setUp")
-     * @Security("has_role('ROLE_USER')")
-     */
-    public function setUpAction(Request $request, User $user)
+    public function setUpAction(Request $request)
     {
+        $user = $this->getUser();
+
         $form = $this->createForm(SetUpType::class, $user);
 
         if ($request->isMethod(Request::METHOD_POST)) {
             $form->handleRequest($request);
+
             if ($form->isValid()) {
                 $m = $this->getDoctrine()->getManager();
                 $m->flush();
+
                 return $this->redirectToRoute('app_index_index');
             }
         }
 
-        return $this->render(':index:setup.html.twig', ['form' => $form->createView()]);
+        return $this->render('UserBundle:SetUp:step1.html.twig', ['form' => $form->createView()]);
     }
 }

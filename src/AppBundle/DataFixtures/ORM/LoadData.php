@@ -14,6 +14,7 @@ namespace AppBundle\DataFixtures\ORM;
 
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Ciclo;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\Tag;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -23,6 +24,12 @@ use Trascastro\UserBundle\Entity\User;
 class LoadData implements FixtureInterface
 {
     public function load(ObjectManager $m)
+    {
+        $this->loadUsers($m);
+        $this->loadCiclos($m);
+    }
+
+    private function loadUsers(ObjectManager $m)
     {
         $user1 = new User();
         $user1
@@ -47,4 +54,19 @@ class LoadData implements FixtureInterface
         $m->flush();
     }
 
+    private function loadCiclos(ObjectManager $m)
+    {
+        $grades = Ciclo::GRADES;
+        $ciclos = Ciclo::CICLOS;
+
+        foreach ($grades as $grade) {
+            foreach ($ciclos[$grade] as $cicloName) {
+                $ciclo = new Ciclo();
+                $ciclo->setGrade($grade);
+                $ciclo->setName($cicloName);
+                $m->persist($ciclo);
+                $m->flush();
+            }
+        }
+    }
 }

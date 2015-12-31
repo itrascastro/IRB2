@@ -14,6 +14,30 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ciclo
 {
+    const GRADES = ['MITJA', 'SUPERIOR'];
+
+    const CICLOS = [
+        'MITJA' => [
+            'ACTIVITATS COMERCIALS',
+            'CAFEMN',
+            'CAI',
+            'GESTIÓ ADMINISTRATIVA',
+            'JARDINERIA I FLORISTERIA',
+            'PERRUQUERIA I COSMÈTICA CAPIL·LAR',
+            'PRODUCCIÓ AGROECOLÒGICA',
+            'SISTEMES MICROINFORMÀTICS I XARXES',
+        ],
+        'SUPERIOR' => [
+            'ADMINISTRACIÓ DE SISTEMES INFORMÀTICS EN LA XARXA',
+            'ADMINISTRACIÓ I FINANCES',
+            'COMERÇ INTERNACIONAL',
+            'DESENVOLUPAMENT D´APLICACIONS WEB',
+            'PAISATGISME I MEDI RURAL',
+            'TAFE',
+            'TRANSPORT I LOGÍSTICA',
+        ]
+    ];
+
     /**
      * @var int
      *
@@ -26,14 +50,14 @@ class Ciclo
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", columnDefinition="ENUM('MITJÀ', 'SUPERIOR')", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="grade", type="string", length=50)
+     * @ORM\Column(name="grade", type="string", length=30)
      */
     private $grade;
 
@@ -201,5 +225,10 @@ class Ciclo
     public function getInstructors()
     {
         return $this->instructors;
+    }
+
+    function __toString()
+    {
+        return $this->name;
     }
 }

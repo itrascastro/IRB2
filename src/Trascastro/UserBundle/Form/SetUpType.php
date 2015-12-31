@@ -2,6 +2,7 @@
 
 namespace Trascastro\UserBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,6 +14,11 @@ class SetUpType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('surnames')
+            ->add('ciclo', EntityType::class, [
+                'class' => 'AppBundle\Entity\Ciclo',
+                'choice_label' => 'name',
+            ])
             ->add('submit', SubmitType::class)
         ;
     }
