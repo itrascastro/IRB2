@@ -6,38 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Ciclo
+ * Modulo
  *
- * @ORM\Table(name="ciclo")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CicloRepository")
+ * @ORM\Table(name="modulo")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ModuloRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Ciclo
+class Modulo
 {
-    const GRADES = ['MITJA', 'SUPERIOR'];
-
-    const CICLOS = [
-        'MITJA' => [
-            'ACTIVITATS COMERCIALS',
-            'CAFEMN',
-            'CAI',
-            'GESTIÓ ADMINISTRATIVA',
-            'JARDINERIA I FLORISTERIA',
-            'PERRUQUERIA I COSMÈTICA CAPIL·LAR',
-            'PRODUCCIÓ AGROECOLÒGICA',
-            'SISTEMES MICROINFORMÀTICS I XARXES',
-        ],
-        'SUPERIOR' => [
-            'ADMINISTRACIÓ DE SISTEMES INFORMÀTICS EN LA XARXA',
-            'ADMINISTRACIÓ I FINANCES',
-            'COMERÇ INTERNACIONAL',
-            'DESENVOLUPAMENT D´APLICACIONS WEB',
-            'PAISATGISME I MEDI RURAL',
-            'TAFE',
-            'TRANSPORT I LOGÍSTICA',
-        ]
-    ];
-
     /**
      * @var int
      *
@@ -57,9 +33,16 @@ class Ciclo
     /**
      * @var string
      *
-     * @ORM\Column(name="grade", type="string", length=30)
+     * @ORM\Column(name="number", type="string", length=2)
      */
-    private $grade;
+    private $number;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="grup", type="string", length=1, nullable=true)
+     */
+    private $grup;
 
     /**
      * @var \DateTime
@@ -76,19 +59,21 @@ class Ciclo
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="Trascastro\UserBundle\Entity\User", mappedBy="ciclo", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="Trascastro\UserBundle\Entity\User", inversedBy="modulos")
      */
     private $instructors;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Modulo", mappedBy="ciclo", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Ciclo", inversedBy="modulos")
      */
-    private $modulos;
+    private $ciclo;
 
+    /**
+     * Modulo constructor.
+     */
     public function __construct()
     {
         $this->instructors = new ArrayCollection();
-        $this->modulos = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->updatedAt = $this->createdAt;
     }
@@ -108,7 +93,7 @@ class Ciclo
      *
      * @param string $name
      *
-     * @return Ciclo
+     * @return Modulo
      */
     public function setName($name)
     {
@@ -128,27 +113,51 @@ class Ciclo
     }
 
     /**
-     * Set grade
+     * Set number
      *
-     * @param string $grade
+     * @param string $number
      *
-     * @return Ciclo
+     * @return Modulo
      */
-    public function setGrade($grade)
+    public function setNumber($number)
     {
-        $this->grade = $grade;
+        $this->number = $number;
 
         return $this;
     }
 
     /**
-     * Get grade
+     * Get number
      *
      * @return string
      */
-    public function getGrade()
+    public function getNumber()
     {
-        return $this->grade;
+        return $this->number;
+    }
+
+    /**
+     * Set grup
+     *
+     * @param string $grup
+     *
+     * @return Modulo
+     */
+    public function setGrup($grup)
+    {
+        $this->grup = $grup;
+
+        return $this;
+    }
+
+    /**
+     * Get grup
+     *
+     * @return string
+     */
+    public function getGrup()
+    {
+        return $this->grup;
     }
 
     /**
@@ -156,7 +165,7 @@ class Ciclo
      *
      * @param \DateTime $createdAt
      *
-     * @return Ciclo
+     * @return Modulo
      */
     public function setCreatedAt($createdAt)
     {
@@ -178,9 +187,7 @@ class Ciclo
     /**
      * Set updatedAt
      *
-     * @ORM\PreUpdate()
-     *
-     * @return Ciclo
+     * @return Modulo
      */
     public function setUpdatedAt()
     {
@@ -204,7 +211,7 @@ class Ciclo
      *
      * @param \Trascastro\UserBundle\Entity\User $instructor
      *
-     * @return Ciclo
+     * @return Modulo
      */
     public function addInstructor(\Trascastro\UserBundle\Entity\User $instructor)
     {
@@ -233,42 +240,27 @@ class Ciclo
         return $this->instructors;
     }
 
-    function __toString()
-    {
-        return $this->name;
-    }
-
     /**
-     * Add modulo
+     * Set ciclo
      *
-     * @param \AppBundle\Entity\Modulo $modulo
+     * @param \AppBundle\Entity\Ciclo $ciclo
      *
-     * @return Ciclo
+     * @return Modulo
      */
-    public function addModulo(\AppBundle\Entity\Modulo $modulo)
+    public function setCiclo(\AppBundle\Entity\Ciclo $ciclo = null)
     {
-        $this->modulos[] = $modulo;
+        $this->ciclo = $ciclo;
 
         return $this;
     }
 
     /**
-     * Remove modulo
+     * Get ciclo
      *
-     * @param \AppBundle\Entity\Modulo $modulo
+     * @return \AppBundle\Entity\Ciclo
      */
-    public function removeModulo(\AppBundle\Entity\Modulo $modulo)
+    public function getCiclo()
     {
-        $this->modulos->removeElement($modulo);
-    }
-
-    /**
-     * Get modulos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getModulos()
-    {
-        return $this->modulos;
+        return $this->ciclo;
     }
 }

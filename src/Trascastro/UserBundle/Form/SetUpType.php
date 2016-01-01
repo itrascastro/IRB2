@@ -16,8 +16,8 @@ class SetUpType extends AbstractType
             ->add('name')
             ->add('surnames')
             ->add('ciclo', EntityType::class, [
-                'class' => 'AppBundle\Entity\Ciclo',
-                'choice_label' => 'name',
+                'class'         => 'AppBundle\Entity\Ciclo',
+                'choice_label'  => 'name',
             ])
             ->add('submit', SubmitType::class)
         ;

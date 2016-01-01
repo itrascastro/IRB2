@@ -12,6 +12,7 @@
 
 namespace Trascastro\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,6 +50,11 @@ class User extends BaseUser
     private $ciclo;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Modulo", mappedBy="instructors")
+     */
+    private $modulos;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -66,6 +72,7 @@ class User extends BaseUser
     {
         parent::__construct();
 
+        $this->modulos = new ArrayCollection();
         $this->createdAt    = new \DateTime();
         $this->updatedAt    = $this->createdAt;
     }
@@ -183,5 +190,39 @@ class User extends BaseUser
     public function getSurnames()
     {
         return $this->surnames;
+    }
+
+    /**
+     * Add modulo
+     *
+     * @param \AppBundle\Entity\Modulo $modulo
+     *
+     * @return User
+     */
+    public function addModulo(\AppBundle\Entity\Modulo $modulo)
+    {
+        $this->modulos[] = $modulo;
+
+        return $this;
+    }
+
+    /**
+     * Remove modulo
+     *
+     * @param \AppBundle\Entity\Modulo $modulo
+     */
+    public function removeModulo(\AppBundle\Entity\Modulo $modulo)
+    {
+        $this->modulos->removeElement($modulo);
+    }
+
+    /**
+     * Get modulos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModulos()
+    {
+        return $this->modulos;
     }
 }

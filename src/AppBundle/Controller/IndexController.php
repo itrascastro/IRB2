@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Trascastro\UserBundle\Form\SetUpType;
@@ -12,7 +11,6 @@ class IndexController extends Controller
 {
     /**
      * @Route("/", name="app_index_index")
-     * @Security("has_role('ROLE_USER')")
      */
     public function indexAction()
     {
